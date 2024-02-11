@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 
-import {addToCartAction} from '../../actions/cart';
 
 
 
-
-
-
-const ProductListItem = ({product, addToCartAction}) => {
+const ProductListItem = ({product}) => {
 
   const [quantity, setQuantity] = useState(1);
 
   const addToCart = ()=>{
-    addToCartAction(product, quantity);
+    // addToCartAction(product, quantity);
+
+    console.log('add to chart')
   }
-
-
-
 
   const updateQuantity =(type)=>{
  
@@ -87,10 +81,6 @@ const ProductListItem = ({product, addToCartAction}) => {
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	};
-};
 
-export default connect(mapStateToProps, {addToCartAction})(ProductListItem);
+
+export default ProductListItem;

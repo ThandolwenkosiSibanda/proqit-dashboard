@@ -125,7 +125,7 @@ console.log('changed')
                   <ul className="c-nav-primary__menu">
                     {categoriesData?.categories?.map((category, index)=>(
                       <React.Fragment key ={index}>
-                    <li className="c-nav-primary__menu-item">
+                    <li className="c-nav-primary__menu-item" >
                     <a href="insulation.html"><span>{category.name}</span></a>
                     <div className="c-nav-primary__subcategory-nav menu--tier-2" data-parent="insulation" id="insulation-nav-height">
                       <div className="c-nav-primary__subcategory-nav__layout">
