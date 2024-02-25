@@ -1,32 +1,11 @@
-import React, { useEffect }  from 'react';
-import { CATEGORIES_QUERY } from '../../gql/Query';
-import { useQuery } from '@apollo/client';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import {GoChecklist} from 'react-icons/go';
-import SmallCart from '../cart/SmallCart';
+
+
 
 
 const NavBar = (props) => {
-	const  isSignedIn  = true;
 
-  
-
-
-  useEffect(()=> {
-     
-console.log('changed')
-
-    
-   }, [isSignedIn])
-
-
-   const {data: categoriesData, error: categoriesError} = useQuery(CATEGORIES_QUERY, {
-    fetchPolicy: 'network-only',
-    // pollInterval: 500,
-  });
-
-  console.log('categoriesData', categoriesData?.categories);
-  console.log('categoriesError', categoriesError);
 
 
 
@@ -50,13 +29,7 @@ console.log('changed')
                   </button>
                 </div>
                 <div className="col l6 s4 no-spacing">
-                  <form role="search" className="c-site-search navbar-form desktop" action="" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="&#x2713;" />
-                  <div className="input-field">
-                    <label className="screen-reader-text" htmlFor="query">Search for:</label>
-                    <input data-name="site-search" autocomplete="off" className="product-search-input search-lg search-sm fa-fa-search form-control" name="query" placeholder="What are you looking for?" type="search" />
-                  </div>
-                  <input className="c-button no-variation" type="submit" value="Search" />
-                </form>
+
 
                 <a className="c-page-logo mobile" href="index.html">
                   <img alt="" src="" />
@@ -65,49 +38,18 @@ console.log('changed')
               <div className="col l3 s4">
                 <nav className="c-nav-account">
                   <ul className="menu">
-                    <li className="menu-item menu-item--enquiries">
-                      <Link to={`/inquires`} >
-                      <span class="badge badge--circle">3</span>
-                        <GoChecklist  size={30}/>
-                      </Link>
-                     
-                    </li>
-                      <li className="menu-item menu-item--cart">
-                    
-                      {/* <Link to={`/cart`}>
-                       <span class="badge badge--circle">8</span>
-                        <IoMdBasket  size={35}/>
-                        <span>$10</span>
-                      </Link> */}
 
-                      <Link to={`/cart`}>
-                        <SmallCart />
-                      </Link>
+                      <li className="menu-item menu-item--cart">
                           
-   
                           </li>
                           <li className="menu-item menu-item--account hide-on-med-and-down">
 
 
 
 
-                          <ul class="c-nav-primary__menu" style={{backgroundColor: 'red'}}>
-                    <li class="c-nav-primary__menu-item" style={{backgroundColor: 'red'}}>
+                          <ul class="c-nav-primary__menu" >
+                    <li class="c-nav-primary__menu-item">
                       <span>My Account</span>
-                      <div class="c-nav-primary__subcategory-nav " style={{backgroundColor: 'red'}}>
-                      <p>Welcome to Proqit!</p> 
-                        <div class="c-nav-primary__subcategory-nav__layout" >
-
-                      
-                          <div >
-
-                          <Link to={`/login`} >Login</Link>
-                          <Link to={`/signup`} >Sign Up</Link>
-                          <Link to={`/login`} >My Account</Link>
-                          
-                          </div>
-                        </div>
-                      </div>
                     </li>
 
                     </ul>
@@ -123,39 +65,50 @@ console.log('changed')
               <div className="col s12 navigation">
                 <nav className="c-nav-primary desktop">
                   <ul className="c-nav-primary__menu">
-                    {categoriesData?.categories?.map((category, index)=>(
-                      <React.Fragment key ={index}>
-                    <li className="c-nav-primary__menu-item" >
-                    <a href="insulation.html"><span>{category.name}</span></a>
-                    <div className="c-nav-primary__subcategory-nav menu--tier-2" data-parent="insulation" id="insulation-nav-height">
-                      <div className="c-nav-primary__subcategory-nav__layout">
 
-                       {category?.subCategories?.map((subCategory,index)=>(
-                         <React.Fragment key ={index}>
-                          <div className="c-nav-primary__category-subnav-container" data-grid="insulation boards">
-                          <div className="c-nav-primary__subcategory-nav__content">
-                            <a className="c-nav-primary__subcategory-nav__category-name" href="insulation/insulation-boards.html">{subCategory.name}</a>
-                            <ul className="menu--tier-3">
+                   <li className="c-nav-primary__menu-item" >
+                     <Link to={`/products`} ><span>Products</span></Link>
+                   </li>
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/payments`} ><span>Payments</span></Link>
+                   </li>
 
-                              {subCategory?.products?.map((product, index)=> (<li key ={index} ><a className="c-nav-primary__subcategory-nav__subcategory-name" href="insulation/insulation-boards/celotex-insulation-board.html">{product.name}</a></li>) )}
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/orders`} ><span>Orders</span></Link>
+                   </li>
 
-                              <li><button className="btn btn-unstyled" data-action="revealContent#show" data-target="hidden-insulation-boards"><span className="button__text">Show More</span> <span className="menu__expander"></span></button></li>
-                            </ul>
-                          </div>
-                        </div>
-                        </React.Fragment>
-                        ))}
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/enquiries`} ><span>Enquiries</span></Link>
+                   </li>
 
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/suppliers`} ><span>Suppliers</span></Link>
+                   </li>
 
-
-                      </div>
-                    </div>
-                  </li>
-                  </React.Fragment>
-                    ))}
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/accounts`} ><span>Accounts</span></Link>
+                   </li>
 
 
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/returns`} ><span>Returns</span></Link>
+                   </li>
 
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/deliveries`} ><span>Deliveries</span></Link>
+                   </li>
+
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/guides`} ><span>Buyer's Guides</span></Link>
+                   </li>
+
+                   <li className="c-nav-primary__menu-item" >
+                     <Link to={`/documentation`} ><span>Documentation</span></Link>
+                   </li>
+
+                   <li className="c-nav-primary__menu-item" >
+                   <Link to={`/plans`} ><span>Blue Prints and Quantity Surveying</span></Link>
+                   </li>
 
                   </ul>
                 </nav>

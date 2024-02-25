@@ -6,6 +6,16 @@ import {Routes, Route, Outlet} from 'react-router-dom';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductNew from './pages/ProductNew';
+import Payments from './pages/Payments';
+import Orders from './pages/Orders';
+import Enquiries from './pages/Enquiries';
+import Suppliers from './pages/Suppliers';
+import Accounts from './pages/Accounts';
+import Returns from './pages/Returns';
+import Deliveries from './pages/Deliveries';
+import Guides from './pages/Guides';
+import Documentation from './pages/Documentation';
+import Plans from './pages/Plans';
 // import Products from './pages/Products';
 
 
@@ -19,19 +29,16 @@ const App = ()=> {
           <Route path="/products" element={<Products />} />
           <Route path="/product/new" element={<ProductNew />} />
 
-          {/* <Route path="/upload" element={<Upload />}/>
-          <Route path="/review" element={<Review/>}/>
-          <Route path="/contact" element={<Contact/>}/>
-          <Route path="/analysis" element={<Analysis/>}/> */}
-
-
-                   {/* <Route path="/products/:id" component={ProductViewPage} exact={true} />
-				<Route path="/login" component={LoginPage} exact={true} />
-				<Route path="/signup" component={SignupPage} exact={true} />
-				<Route path="/shops" component={ShopsPage} exact={true} />
-				<Route path="/shops/:id" component={ShopPage} exact={true} />
-				<Route path="/banners" component={BannersPage} exact={true} />
-				<Route path="/banners/:id" component={BannerPage} exact={true} /> */}
+				  <Route path="/payments" element={<Payments />}/>
+			  	<Route path="/orders" element={<Orders />}  />
+			  	<Route path="/enquiries" element={<Enquiries />}  />
+				  <Route path="/suppliers" element={<Suppliers />}  />
+				  <Route path="/accounts" element={<Accounts />}/>
+				  <Route path="/returns" element={<Returns />} />
+				  <Route path="/deliveries" element={<Deliveries />}  />
+				  <Route path="/guides" element={<Guides />}  />
+				  <Route path="/documentation" element={<Documentation />} />
+				  <Route path="/plans" element={<Plans />}  />
 
         </Route>
       </Routes>

@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 
 
 import axios from 'axios';
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_PROMOTION_MUTATION, UPDATE_PROMOTION_MUTATION } from '../../gql/Mutation';
@@ -265,8 +265,8 @@ console.log('handle change', e.target.name)
   <Form.Select aria-label="select" name ={'type'} value ={form?.type} onChange={handleChange}>
   
     
-    <option selected={form?.type == "Basic" && true} value="Basic">Basic</option>
-    <option  selected={form?.type == "Premium" && true} value="Premium">Premium</option>
+    <option selected={form?.type === "Basic" && true} value="Basic">Basic</option>
+    <option  selected={form?.type === "Premium" && true} value="Premium">Premium</option>
   </Form.Select>
   </Form.Group>
   

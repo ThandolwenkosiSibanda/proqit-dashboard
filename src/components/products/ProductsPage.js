@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_PROMOTION_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
 import { PRODUCTS_QUERY, SHOPS_QUERY } from '../../gql/Query';
-import moment from 'moment/moment';
+
 
 
 const ProductsPage = () => {
