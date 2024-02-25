@@ -9,15 +9,33 @@ import axios from 'axios';
 // import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_PROMOTION_MUTATION, UPDATE_PROMOTION_MUTATION } from '../../gql/Mutation';
+import { CREATE_PRODUCT_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
 import {  PROMOTION_EDIT_QUERY, SHOPS_QUERY } from '../../gql/Query';
 import {useParams} from 'react-router-dom';
 import DraftEditor from './DraftEditor';
+import { EditorState, convertToRaw } from 'draft-js';
 
 
 const ProductNewComponent = () => {
 
+
+
+  const [editorState, setEditorState] = React.useState(
+    () => EditorState.createEmpty(),
+
+    
+);
+
   const {id} = useParams();
+
+  
+
+  const dataToBeSaved = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+
+
+  console.log('dataToBeSaved', dataToBeSaved)
+
+
 
  
 
@@ -73,6 +91,9 @@ const ProductNewComponent = () => {
 
 
 
+
+console.log('images to be uploaded', images);
+
     const [showDelete, setShowDelete] = useState(false);
 
 
@@ -93,6 +114,8 @@ const ProductNewComponent = () => {
     const handleChange = (e) => {
 console.log('handle change', e.target.name)
 
+       console.log('form', form)
+
        setForm({...form, [e.target.name]: e.target.value})
       };
 
@@ -112,23 +135,35 @@ console.log('handle change', e.target.name)
       console.log('active', active)
 
 
-    const [submit, {data: updateData, error: updateError}] = useMutation(UPDATE_PROMOTION_MUTATION, {
+    const [submit, {data: addData,loading: addLoading, error: addError}] = useMutation(CREATE_PRODUCT_MUTATION, {
         variables: {
-          _id: id,
-          shop: form?.shop,
-          type: form?.type,
-          title: form?.title,
-          price: parseFloat(form?.price),
-          promoPrice: parseFloat(form?.promoPrice),
-          expiryDate: expiryDate.toString(),
-          images: imagesUrls.length > 0 ? imagesUrls : form?.images
+          name: form?.name,
+          guestPrice: parseFloat(form?.guestPrice),
+          tradeAccountPrice: parseFloat(form?.tradeAccountPrice),
+          bulkPrice: parseFloat(form?.bulkPrice),
+          shortDescription: form?.shortDescription,
+          longDescription: form?.longDescription,
+          content: dataToBeSaved,
+          // name: form?.name,
+          // name: form?.name,
+          // name: form?.name,
+          // name: form?.name,
+          // name: form?.name,
+          // name: form?.name,
+          // type: form?.type,
+          // title: form?.title,
+          // price: parseFloat(form?.price),
+          // promoPrice: parseFloat(form?.promoPrice),
+          // expiryDate: expiryDate.toString(),
+          images: imagesUrls.length > 0 ? imagesUrls : ''
         },
       });
 
-      console.log('updateData', updateData);
-    //   console.log('createError', createError);
+      console.log('updateData', addData);
 
-      console.log('updateError', JSON.stringify(updateError, null, 2));
+      console.log('addLoading', addLoading);
+
+      console.log('addError', JSON.stringify(addError, null, 2));
 
 
       const [deletePromotion, {data: deleteData, error: deleteError}] = useMutation(DELETE_PROMOTION_MUTATION, {
@@ -173,7 +208,7 @@ console.log('handle change', e.target.name)
             setImagesUrls(urls);
             submit();
 
-            console.log('updated')
+            // console.log('updated')
            
           }
           else {
@@ -275,8 +310,8 @@ console.log('handle change', e.target.name)
       <Form.Control
         type="text"
         placeholder=""
-        name ={'title'}
-        value ={form?.title}
+        name ={'name'}
+        value ={form?.name}
         onChange={handleChange}
       />
     </Form.Group>
@@ -368,7 +403,7 @@ console.log('handle change', e.target.name)
 
       <div style={{display: 'flex', flexDirection: 'column', flex: 4}}>
 
-      <DraftEditor/>
+      <DraftEditor editorState ={editorState} setEditorState={setEditorState}/>
         
       </div>
 
@@ -397,7 +432,7 @@ console.log('handle change', e.target.name)
      <div style={{display: 'flex', flexDirection: 'column', flex: 1, }}>
 
 <Form.Group controlId="formFileLg" className="mb-3">
-<Form.Label>technicalDownLoadss</Form.Label>
+<Form.Label>technicalDownLoads</Form.Label>
 <Form.Control type="file" size="lg"  multiple onChange={handleImageChange} />
 </Form.Group>
 

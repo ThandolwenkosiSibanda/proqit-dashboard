@@ -57,6 +57,35 @@ export const CREATE_USER_FROM_GOOGLE_MUTATION = gql`
   }
 `;
 
+
+export const CREATE_PRODUCT_MUTATION = gql`
+  mutation CreateProductMutation(
+    $name: String
+    $guestPrice: Float
+    $tradeAccountPrice: Float
+    $bulkPrice: Float
+    $shortDescription: String
+    $longDescription: String
+    $images: [String]
+    $content: String
+  ) {
+    createProduct(
+      input: {
+              name: $name,
+              guestPrice: $guestPrice, 
+              tradeAccountPrice: $tradeAccountPrice, 
+              bulkPrice: $bulkPrice, 
+              shortDescription: $shortDescription, 
+              longDescription: $longDescription,
+              images: $images, 
+              content: $content,   
+              }
+    ) {
+      _id
+    }
+  }
+`;
+
 export const CREATE_PAYMENT_MUTATION = gql`
   mutation CreatePayment(
     $amount: Float!

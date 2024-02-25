@@ -79,15 +79,13 @@ select {
 `;
 
 
-const DraftEditor = () => {
-  const [editorState, setEditorState] = React.useState(
-      () => EditorState.createEmpty(),
-  );
+const DraftEditor = ({editorState, setEditorState}) => {
+
 
   const [active, setActive] = useState('');
 
 
-  console.log('editorState', editorState)
+
 
 
   const _onBoldMouseDown = (e) => {

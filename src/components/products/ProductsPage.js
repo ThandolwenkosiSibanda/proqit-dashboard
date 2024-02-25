@@ -72,6 +72,10 @@ const ProductsPage = () => {
 
       console.log('data', data)
 
+      console.log('loading', loading)
+
+      console.log('prodcuts error', error)
+
       const {data: shops} = useQuery(SHOPS_QUERY, {
         fetchPolicy: 'network-only',
         pollInterval: 500,
@@ -338,7 +342,7 @@ const ProductsPage = () => {
         <tr>
           <th>#</th>
           <th>name</th>
-          <th>Batch No.</th>
+          {/* <th>Batch No.</th> */}
           <th>Categories</th>
        
           <th>Guest Price</th>
@@ -355,7 +359,7 @@ const ProductsPage = () => {
 {data?.products?.map((product, index)=><tr key ={index}>
    <td>{index + 1}</td>
    <td>{product?.name}</td>
-   <td>{product?._id}</td>
+   {/* <td>{product?._id}</td> */}
           
         
           <td>{product?.categories?.map((category)=><p>{category.name}</p>)}</td>
