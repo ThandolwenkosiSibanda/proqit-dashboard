@@ -1,6 +1,7 @@
 import React from 'react';
-import NavBannerTop from '../components/navBannerTop/NavBannerTop';
+
 import NavBar from '../components/navBar/NavBar';
+import ProductsPage from '../components/products/ProductsPage';
 
 
 
@@ -10,10 +11,10 @@ const  Products= ()=> {
 
     <NavBar/>
 
-    <NavBannerTop />
-
    <div className="container">
-   <h1>Products</h1>
+
+    <ProductsPage />
+   
     </div>
 
 

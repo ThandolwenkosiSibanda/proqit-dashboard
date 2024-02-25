@@ -497,6 +497,7 @@ export const PRODUCTS_QUERY = gql`
     tags
     categories {
       _id
+      name
     }
     subCategories {
       _id

@@ -4,8 +4,9 @@ import './index.css';
 
 import {Routes, Route, Outlet} from 'react-router-dom';
 import Home from './pages/Home';
-import Product from './pages/Product';
 import Products from './pages/Products';
+import ProductNew from './pages/ProductNew';
+// import Products from './pages/Products';
 
 
 
@@ -15,8 +16,8 @@ const App = ()=> {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/products/:id" element={<Product />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/product/new" element={<ProductNew />} />
 
           {/* <Route path="/upload" element={<Upload />}/>
           <Route path="/review" element={<Review/>}/>
