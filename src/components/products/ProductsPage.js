@@ -3,7 +3,6 @@ import './index.css';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
@@ -11,6 +10,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_PROMOTION_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
 import { PRODUCTS_QUERY, SHOPS_QUERY } from '../../gql/Query';
+
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 
 
@@ -152,13 +164,30 @@ const ProductsPage = () => {
 
         });
       }
+
+      
  
 
 
 
 
+
+
     
-     
+      const [modalIsOpen, setIsOpen] = useState(false);
+
+      function openModal() {
+        setIsOpen(true);
+      }
+    
+      function afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        
+      }
+    
+      function closeModal() {
+        setIsOpen(false);
+      }
     
 
 
@@ -169,7 +198,27 @@ const ProductsPage = () => {
 
 	return (
 		<>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+      >
+        
+        <button onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+        <form>
+          <input />
+          
+        
+          
+        </form>
+      </Modal>
+
+
 			<div className="" style={{padding: '10px'}}>
+
+
 
 
 <div style={{display: 'flex', justifyContent: 'flex-end', padding: '50px'}}>
@@ -218,131 +267,12 @@ const ProductsPage = () => {
 
 
 
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          Add New Product
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-
-
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Shop</Form.Label>
-          <Form.Select aria-label="select" name ={'shop'} onChange={handleChange}>
-          <option value="">Select</option>
-
-            {shops?.shops.map((shop, index)=> <option key ={index} value={shop._id}>{shop.name}</option>)}
-            
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Type</Form.Label>
-          <Form.Select aria-label="select" name ={'type'} onChange={handleChange}>
-
-            <option value="">Select</option>
-            <option value="Basic">Basic</option>
-            <option value="Premium">Premium</option>
-          </Form.Select>
-        </Form.Group>
-
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder=""
-                name ={'title'}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder=""
-                name ={'price'}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>Promo Price</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder=""
-                name ={'promoPrice'}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>Number of Voucher Codes</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder=""
-                name ={'numberOfVoucherCodes'}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-
-            
-
-            <Form.Group className="mb-3" controlId="">
-              <Form.Label>Expiry Date</Form.Label>
-              <div>
-              <DatePicker selected={expiryDate} onChange={(date) => setExpiryDate(date)} />
-              </div>
-            </Form.Group>
-
-            <Form.Group controlId="formFileLg" className="mb-3">
-              <Form.Label>Images</Form.Label>
-              <Form.Control type="file" size="lg"  multiple onChange={handleImageChange} />
-           </Form.Group>
-  
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showDelete} onHide={handleCancelDelete}>
-        <Modal.Header closeButton>
-          Are you sure you want to delete this promotion
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <div>
-                {active.title}
-            </div>
-  
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleCancelDelete}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDelete}>
-            Delete Promotion
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
 <Table striped bordered hover>
       <thead>
         <tr>
           <th>#</th>
           <th>name</th>
-          {/* <th>Batch No.</th> */}
+          
           <th>Categories</th>
        
           <th>Guest Price</th>
@@ -359,7 +289,7 @@ const ProductsPage = () => {
 {data?.products?.map((product, index)=><tr key ={index}>
    <td>{index + 1}</td>
    <td>{product?.name}</td>
-   {/* <td>{product?._id}</td> */}
+  
           
         
           <td>{product?.categories?.map((category)=><p>{category.name}</p>)}</td>
@@ -380,7 +310,7 @@ const ProductsPage = () => {
           </td>
 
           <td>
-             <button className='btn btn-danger' onClick={()=> handleDeleteClick(product)} >Delete</button>
+             <button className='btn btn-danger' onClick={openModal} >Delete</button>
           </td>
 
         </tr>)}

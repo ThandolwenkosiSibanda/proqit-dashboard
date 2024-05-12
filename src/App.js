@@ -16,6 +16,7 @@ import Deliveries from './pages/Deliveries';
 import Guides from './pages/Guides';
 import Documentation from './pages/Documentation';
 import Plans from './pages/Plans';
+import Categories from './pages/Categories';
 // import Products from './pages/Products';
 
 
@@ -28,7 +29,7 @@ const App = ()=> {
           <Route index element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/new" element={<ProductNew />} />
-
+          <Route path="/categories" element={<Categories />} />
 				  <Route path="/payments" element={<Payments />}/>
 			  	<Route path="/orders" element={<Orders />}  />
 			  	<Route path="/enquiries" element={<Enquiries />}  />

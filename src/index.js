@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 
-import './styles/proqitmain.css';
+// import './styles/proqitmain.css';
 import './styles/proqitprimary.css';
 
 

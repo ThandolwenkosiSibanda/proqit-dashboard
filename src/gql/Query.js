@@ -417,6 +417,9 @@ export const ADMIN_MONEY_MEMBERS_QUERY = gql`
   }
 `;
 
+
+
+
 export const SHOPS_QUERY = gql`
   query ShopsQuery {
     shops {
@@ -479,6 +482,24 @@ export const CATEGORIES_QUERY = gql`
         name
       }
       }
+    }
+  }
+`;
+
+export const SUB_CATEGORIES_QUERY = gql`
+  query SubCategoriesQuery {
+    subCategories {
+      _id
+      name
+    }
+  }
+`;
+
+export const SUB_SUB_CATEGORIES_QUERY = gql`
+  query SubSubCategoriesQuery {
+    subSubCategories {
+      _id
+      name
     }
   }
 `;

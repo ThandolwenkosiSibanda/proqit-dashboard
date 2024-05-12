@@ -3,27 +3,43 @@ import './index.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-
-
 import axios from 'axios';
-// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_PRODUCT_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
-import {  PROMOTION_EDIT_QUERY, SHOPS_QUERY } from '../../gql/Query';
+import {  CATEGORIES_QUERY, PROMOTION_EDIT_QUERY, SHOPS_QUERY, SUB_CATEGORIES_QUERY, SUB_SUB_CATEGORIES_QUERY } from '../../gql/Query';
 import {useParams} from 'react-router-dom';
 import DraftEditor from './DraftEditor';
 import { EditorState, convertToRaw } from 'draft-js';
 
 
+import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+
+
+// replace with database
+const allTags = [
+  { name: 'chocolate', label: 'Chocolate' },
+  { name: 'strawberry', label: 'Strawberry' },
+  { name: 'vanilla', label: 'Vanilla' },
+];
+
+
+
+
+const types = [
+  { name: 'Basic', label: 'Basic' },
+  { name: 'Premium', label: 'Premium' },
+];
+
+
 const ProductNewComponent = () => {
 
+  
 
-
-  const [editorState, setEditorState] = React.useState(
-    () => EditorState.createEmpty(),
-
-    
+  const [editorState, setEditorState] = useState(
+    () => EditorState.createEmpty(),  
 );
 
   const {id} = useParams();
@@ -33,11 +49,7 @@ const ProductNewComponent = () => {
   const dataToBeSaved = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 
 
-  console.log('dataToBeSaved', dataToBeSaved)
 
-
-
- 
 
   const {data, loading} = useQuery(PROMOTION_EDIT_QUERY, {
     fetchPolicy: 'network-only',
@@ -47,21 +59,27 @@ const ProductNewComponent = () => {
     },
   });
 
-  const {data: shops} = useQuery(SHOPS_QUERY, {
+  const {data: categories} = useQuery(CATEGORIES_QUERY, {
+    fetchPolicy: 'network-only',
+    pollInterval: 500,
+  });
+
+  const {data: subCategories} = useQuery(SUB_CATEGORIES_QUERY, {
     fetchPolicy: 'network-only',
     pollInterval: 500,
   });
 
 
-
-  console.log('data', data?.promotion)
-  
-
-  console.log('id', id)
-
+  const {data: subSubCategories} = useQuery(SUB_SUB_CATEGORIES_QUERY, {
+    fetchPolicy: 'network-only',
+    pollInterval: 500,
+  });
 
 
+ 
 
+
+ 
 
     const [form, setForm] = useState({});
 
@@ -73,9 +91,6 @@ const ProductNewComponent = () => {
       setExpiryDate(parseInt(data?.promotion?.expiryDate));
      
      }
-
-     
-
     }, [loading]);
 
 
@@ -85,19 +100,19 @@ const ProductNewComponent = () => {
 
     const [images, setImages] = useState([]);
     const [imagesUrls, setImagesUrls] = useState([]);
+    const [docs, setDocs] = useState([]);
+    const [docsUrls, setDocsUrls] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedSubCategories, setSelectedSubCategories] = useState([]);
+    const [selectedSubSubCategories, setSelectedSubSubCategories] = useState([]);
+
     const [expiryDate, setExpiryDate] = useState(new Date());
 
     const [active, setActive] = useState({});
 
 
-
-
-console.log('images to be uploaded', images);
-
     const [showDelete, setShowDelete] = useState(false);
-
-
-
 
 
     const handleDelete = (promotion) => {
@@ -112,27 +127,31 @@ console.log('images to be uploaded', images);
 
 
     const handleChange = (e) => {
-console.log('handle change', e.target.name)
-
-       console.log('form', form)
-
        setForm({...form, [e.target.name]: e.target.value})
       };
 
+      const handleSelect = (name, value) => {
+        setForm({...form, [name]: value.name})
+       };
+
 
     const handleImageChange = (e) => {
-
         if (e.target.files) {
           setImages(e.target.files);
         }
+
       };
 
 
+      const handleDocChange = (e) => {
+        if (e.target.files) {
+          setDocs(e.target.files);
+        }
+
+      };
 
 
-      console.log('data', data);
-
-      console.log('active', active)
+     
 
 
     const [submit, {data: addData,loading: addLoading, error: addError}] = useMutation(CREATE_PRODUCT_MUTATION, {
@@ -146,20 +165,17 @@ console.log('handle change', e.target.name)
           content: dataToBeSaved,
           // name: form?.name,
           // name: form?.name,
-          // name: form?.name,
-          // name: form?.name,
-          // name: form?.name,
-          // name: form?.name,
-          // type: form?.type,
-          // title: form?.title,
-          // price: parseFloat(form?.price),
-          // promoPrice: parseFloat(form?.promoPrice),
-          // expiryDate: expiryDate.toString(),
-          images: imagesUrls.length > 0 ? imagesUrls : ''
+          images: imagesUrls.length > 0 ? imagesUrls : '',
+          technicalDownLoads: docsUrls.length > 0 ? docsUrls : '',
+          tags: selectedTags,
+          categories: selectedCategories,
+          subCategories: selectedSubCategories,
+          subSubCategories: selectedSubSubCategories,
+          type: form?.type,
         },
       });
 
-      console.log('updateData', addData);
+      console.log('addData', addData);
 
       console.log('addLoading', addLoading);
 
@@ -199,17 +215,36 @@ console.log('handle change', e.target.name)
 
           })
         });
+
+
+        let docUrls = [];
+        const docUploaders = [...images].map(file => {
+
+            const url = 'https://api.cloudinary.com/v1_1/molowehou/upload';
+          // Initial FormData
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append('upload_preset', 'y1t423pb');
+          
+    
+          return axios.post(url, formData, {
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+          }).then(response => {
+            const data = response.data;
+            const fileURL = data.secure_url;
+            docUrls.push(fileURL)
+
+          })
+        });
       
         // Once all the files are uploaded 
-        axios.all(uploaders).then(() => {
+        axios.all([uploaders, docUploaders]).then(() => {
 
 
-          if(urls.length > 0){
+          if(urls.length > 0 && docUrls.length > 0){
             setImagesUrls(urls);
-            submit();
-
-            // console.log('updated')
-           
+            setDocsUrls(docUrls);
+            submit(); 
           }
           else {
             submit();
@@ -219,19 +254,107 @@ console.log('handle change', e.target.name)
 
         });
       }
+
+
+
+
+      const getLastTagId =()=>{
+        return selectedTags.reduce((prev, current) => (prev.y > current.y) ? prev : current, 0);
+      };
+
+      const getLastCategoryId =()=>{
+        return selectedCategories.reduce((prev, current) => (prev.y > current.y) ? prev : current, 0);
+      };
+
+
+      const getLastId =(data)=>{
+        return data.reduce((prev, current) => (prev.y > current.y) ? prev : current, 0);
+      };
+
+
+   
+
+
+      const addTag =()=>{
+        const newTags = [...selectedTags,
+          {id: selectedTags.length > 0 ? getLastTagId().id + 1 : 0}];
+            setSelectedTags(newTags);
+      };
+
+
+      const updateTag =(id, value)=>{
+
+        const updatedArr = selectedTags.map((obj) => {
+          if (obj.id === id) {
+            return {...obj, value: value?.name};
+          }
+          return obj;
+        });
+        setSelectedTags(updatedArr);
+      };
+
+      const updateCategory =(id, value)=>{
+        const updatedArr = selectedCategories.map((obj) => {
+          if (obj.id === id) {
+            return {...obj, value: value?.name};
+          }
+          return obj;
+        });
+        setSelectedCategories(updatedArr);
+      };
+
+
+      const updateSubCategory =(id, value)=>{
+        const updatedArr = selectedSubCategories.map((obj) => {
+          if (obj.id === id) {
+            return {...obj, value: value?.name};
+          }
+          return obj;
+        });
+        setSelectedSubCategories(updatedArr);
+      };
+
+      const updateSubSubCategory =(id, value)=>{
+        const updatedArr = selectedSubSubCategories.map((obj) => {
+          if (obj.id === id) {
+            return {...obj, value: value?.name};
+          }
+          return obj;
+        });
+        setSelectedSubSubCategories(updatedArr);
+      };
+
+      const updateType =(id, value)=>{
+        const updatedArr = selectedCategories.map((obj) => {
+          if (obj.id === id) {
+            return {...obj, value: value?.name};
+          }
+          return obj;
+        });
+        setSelectedCategories(updatedArr);
+      };
+
+
+      const addCategory =()=>{
+        const newCategories = [...selectedCategories,
+          {id: selectedCategories.length > 0 ? getLastId(selectedCategories).id + 1 : 0}];
+            setSelectedCategories(newCategories);
+      };
+
+      const addSubCategory =()=>{
+        const newCategories = [...selectedSubCategories,
+          {id: selectedSubCategories.length > 0 ? getLastId(selectedSubCategories).id + 1 : 0}];
+            setSelectedSubCategories(newCategories);
+      };
+
+      const addSubSubCategory =()=>{
+        const newCategories = [...selectedSubSubCategories,
+          {id: selectedSubSubCategories.length > 0 ? getLastId(selectedSubSubCategories).id + 1 : 0}];
+            setSelectedSubSubCategories(newCategories);
+      };
  
 
-
-
-
-    
-     
-    
-
-
-      
-
-      
+   
     
 
 	return (
@@ -239,7 +362,7 @@ console.log('handle change', e.target.name)
 			<div className="" style={{padding: '10px'}}>
 
 
-<div style={{display: 'flex',  padding: '10px'}}>
+<div style={{display: 'flex',  padding: '20px'}}>
      <h5>
         Add Product
       </h5>
@@ -279,30 +402,20 @@ console.log('handle change', e.target.name)
   
 
 
-  <Form.Group className="mb-3" controlId="">
-      <Form.Label>Shop</Form.Label>
-  <Form.Select aria-label="select" name ={'shop'} 
-  value ={form?.shop} 
-  onChange={handleChange}
-  
-  >
-  
-  
-  
-  {shops?.shops.map((shop, index)=> <option key ={index} value={shop._id}>{shop.name}</option>)}
-              
-    
-  </Form.Select>
-  </Form.Group>
+
   
   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
       <Form.Label>Type </Form.Label>
-  <Form.Select aria-label="select" name ={'type'} value ={form?.type} onChange={handleChange}>
-  
-    
-    <option selected={form?.type === "Basic" && true} value="Basic">Basic</option>
-    <option  selected={form?.type === "Premium" && true} value="Premium">Premium</option>
-  </Form.Select>
+
+
+      <Select
+              defaultValue={"Basic"}
+             
+              onChange={(e)=>handleSelect("type", e)}
+             
+              options={types}
+            />
+
   </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
@@ -317,7 +430,7 @@ console.log('handle change', e.target.name)
     </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
-      <Form.Label>guestPrice</Form.Label>
+      <Form.Label>Guest Price</Form.Label>
       <Form.Control
         type="text"
         placeholder=""
@@ -328,7 +441,7 @@ console.log('handle change', e.target.name)
     </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
-      <Form.Label>tradeAccountPrice</Form.Label>
+      <Form.Label>Trade Account Price</Form.Label>
       <Form.Control
         type="text"
         placeholder=""
@@ -339,7 +452,7 @@ console.log('handle change', e.target.name)
     </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
-      <Form.Label>bulkPrice</Form.Label>
+      <Form.Label>Bulk Price</Form.Label>
       <Form.Control
         type="text"
         placeholder=""
@@ -350,7 +463,7 @@ console.log('handle change', e.target.name)
     </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
-      <Form.Label>shortDescription</Form.Label>
+      <Form.Label>Short Description</Form.Label>
       <Form.Control
         type="text"
         placeholder=""
@@ -361,7 +474,7 @@ console.log('handle change', e.target.name)
     </Form.Group>
   
     <Form.Group className="mb-3" controlId="">
-      <Form.Label>longDescription</Form.Label>
+      <Form.Label>Long Description</Form.Label>
       <Form.Control
         type="text"
         placeholder=""
@@ -370,30 +483,72 @@ console.log('handle change', e.target.name)
         onChange={handleChange}
       />
     </Form.Group>
-  
-    <Form.Group className="mb-3" controlId="">
-      <Form.Label>tags</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder=""
-        name ={'tags'}
-        value ={form?.tags}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  
-    <Form.Group className="mb-3" controlId="">
-      <Form.Label>categories</Form.Label>
-      <Form.Control
-        type="text"
-        placeholder=""
-        name ={'categories'}
-        value ={form?.categories}
-        onChange={handleChange}
-      />
-    </Form.Group>
-  
-  
+
+
+
+    <Button variant="outline-primary" onClick={() => addTag()}>Add Tag</Button>
+
+
+
+  <div style={{display: 'flex', flexDirection: 'row', gap: '10px' , width: '250px', flexWrap: 'wrap', marginTop: '10px', marginBottom: '50px'}}>
+
+    {selectedTags.map((tag, index)=> 
+               <Select
+               
+                onChange={()=>updateTag(index, allTags[index + 1])}
+                options={allTags}
+              />
+    )  
+    }
+</div>
+
+
+<Button variant="outline-primary" onClick={() => addCategory()}>Add Category</Button>
+
+<div style={{display: 'flex', flexDirection: 'row', gap: '10px' , width: '250px', flexWrap: 'wrap', marginTop: '10px',  marginBottom: '50px'}}>
+           {selectedCategories.map((category, index)=> 
+             <Select
+             
+              onChange={()=>updateCategory(index, categories?.categories[index + 1])}
+              options={categories?.categories}
+           />
+  )
+
+  }
+</div>
+
+
+
+<Button variant="outline-primary" onClick={() => addSubCategory()}>Add Sub Category</Button>
+
+<div style={{display: 'flex', flexDirection: 'row', gap: '10px' , width: '250px', flexWrap: 'wrap', marginTop: '10px',  marginBottom: '50px'}}>
+           {selectedSubCategories.map((category, index)=> 
+             <Select
+              onChange={()=>updateSubCategory(index, subCategories?.subCategories[index + 1])}
+              options={subCategories?.subCategories}
+           />
+  )
+
+  }
+</div>
+
+
+<Button variant="outline-primary" onClick={() => addSubSubCategory()}>Add Sub SubCategory</Button>
+
+<div style={{display: 'flex', flexDirection: 'row', gap: '10px' , width: '250px', flexWrap: 'wrap', marginTop: '10px',  marginBottom: '50px'}}>
+           {selectedSubSubCategories.map((category, index)=> 
+             <Select
+              onChange={()=>updateSubSubCategory(index, subSubCategories?.subSubCategories[index + 1])}
+              options={subSubCategories?.subSubCategories}
+           />
+  )
+
+  }
+</div>
+
+
+
+
   
   </Form>
 
@@ -421,8 +576,13 @@ console.log('handle change', e.target.name)
   </Form.Group>
   <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
 
-  {form?.images && form?.images.map((image, index)=>   <div key ={index} style={{backgroundColor: 'grey', padding: '4px', borderRadius:'10px', height: '100px'}}>
-    <img src={image} style={{height: '130px'}} alt={'name of the'} />
+
+
+
+
+
+  {[...images].map((image, index)=>   <div key ={index} style={{ padding: '4px', borderRadius:'10px', height: '140px'}}>
+    <img src={URL.createObjectURL(image)} style={{height: '130px'}} alt={'name of the'} />
   </div>)}
 
   </div>
@@ -432,19 +592,21 @@ console.log('handle change', e.target.name)
      <div style={{display: 'flex', flexDirection: 'column', flex: 1, }}>
 
 <Form.Group controlId="formFileLg" className="mb-3">
-<Form.Label>technicalDownLoads</Form.Label>
-<Form.Control type="file" size="lg"  multiple onChange={handleImageChange} />
+<Form.Label>Technical DownLoads</Form.Label>
+<Form.Control type="file" size="lg"  multiple onChange={handleDocChange} />
 </Form.Group>
 
 <Form.Group className="mb-3" controlId="">
-<Form.Label>technicalDownLoads</Form.Label>
+<Form.Label>Technical DownLoads</Form.Label>
 
 </Form.Group>
 <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
 
-{form?.images && form?.images.map((image, index)=>   <div key ={index} style={{backgroundColor: 'grey', padding: '4px', borderRadius:'10px', height: '100px'}}>
-<img src={image} style={{height: '130px'}} alt={'name of the'} />
-</div>)}
+  {[...docs].map((image, index)=><div 
+   key ={index}
+   style={{display:'flex' , backgroundColor: 'grey', padding: '4px', borderRadius:'10px', height: '140px' , justifyContent: 'center', alignItems: 'center'}}>
+    <FontAwesomeIcon icon={faFileLines}  style={{fontSize: '50px'}} color={'white'}/>
+  </div>)}
 
 </div>
   
@@ -453,41 +615,7 @@ console.log('handle change', e.target.name)
      </div>
 
 
-<div style={{display: 'flex', flexDirection: 'row', width: '100%', gap: '20px', backgroundColor: 'red'}}>
 
-<div style={{display: 'flex', flexDirection: 'row', gap: '10px', flex: 4}}>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-<div style={{flex: 1}}>
-
-
-
-
-
-
-  {/* <image src={form?.images[0]}></image> */}
-</div>
-
-
-
-</div>
 
 
 

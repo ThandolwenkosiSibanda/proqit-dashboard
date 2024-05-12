@@ -69,6 +69,11 @@ const NavBar = (props) => {
                    <li className="c-nav-primary__menu-item" >
                      <Link to={`/products`} ><span>Products</span></Link>
                    </li>
+
+                   <li className="c-nav-primary__menu-item" >
+                    <Link to={`/categories`} ><span>Categories</span></Link>
+                   </li>
+
                    <li className="c-nav-primary__menu-item" >
                     <Link to={`/payments`} ><span>Payments</span></Link>
                    </li>
@@ -107,7 +112,7 @@ const NavBar = (props) => {
                    </li>
 
                    <li className="c-nav-primary__menu-item" >
-                   <Link to={`/plans`} ><span>Blue Prints and Quantity Surveying</span></Link>
+                   <Link to={`/plans`} ><span>Blue Prints</span></Link>
                    </li>
 
                   </ul>

@@ -2094,7 +2094,7 @@ html.is-flickity-fullscreen {
 
 :root {
     --star-color: #FFFFFF;
-    --star-background: #FFCD05
+    --star-background: #ffcd05
 }
 
 .rating-stars {
@@ -2759,7 +2759,7 @@ html.is-flickity-fullscreen {
 
 .c-testimonials__item .c-testimonials__stars {
     display: inline-block;
-    /* background-image: url(../components/home/img/star.png); */
+ 
     background-size: contain;
     height: 12px;
     width: 60px;

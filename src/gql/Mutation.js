@@ -67,7 +67,11 @@ export const CREATE_PRODUCT_MUTATION = gql`
     $shortDescription: String
     $longDescription: String
     $images: [String]
+    $technicalDownLoads: [String]
+    $tags: [String]
+    $categories: [String]
     $content: String
+    $type: String
   ) {
     createProduct(
       input: {
@@ -78,7 +82,11 @@ export const CREATE_PRODUCT_MUTATION = gql`
               shortDescription: $shortDescription, 
               longDescription: $longDescription,
               images: $images, 
+              technicalDownLoads: $technicalDownLoads,
+              tags: $tags, 
+              categories: $categories,
               content: $content,   
+              type: $type,
               }
     ) {
       _id
