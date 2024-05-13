@@ -94,6 +94,52 @@ export const CREATE_PRODUCT_MUTATION = gql`
   }
 `;
 
+
+
+
+export const CREATE_CATEGORY_MUTATION = gql`
+  mutation CreateCategoryMutation(
+    $name: String
+  ) {
+    createCategory(
+      input: {
+              name: $name
+              }
+    ) {
+      _id
+    }
+  }
+`;
+
+export const CREATE_SUB_CATEGORY_MUTATION = gql`
+  mutation CreateCategoryMutation(
+    $name: String
+  ) {
+    createSubCategory(
+      input: {
+              name: $name
+              }
+    ) {
+      _id
+    }
+  }
+`;
+
+export const CREATE_SUB_SUB_CATEGORY_MUTATION = gql`
+  mutation CreateSubSubCategoryMutation(
+    $name: String
+  ) {
+    createSubSubCategory(
+      input: {
+              name: $name
+              }
+    ) {
+      _id
+    }
+  }
+`;
+
+
 export const CREATE_PAYMENT_MUTATION = gql`
   mutation CreatePayment(
     $amount: Float!

@@ -510,7 +510,17 @@ const ProductNewComponent = () => {
              <Select
              
               onChange={()=>updateCategory(index, categories?.categories[index + 1])}
-              options={categories?.categories}
+              options={categories?.categories.map((guest, index) => {
+                return {
+                   label: guest.name,
+                   value: guest,
+                   key: index
+                }
+             })}
+
+
+
+
            />
   )
 
@@ -525,7 +535,17 @@ const ProductNewComponent = () => {
            {selectedSubCategories.map((category, index)=> 
              <Select
               onChange={()=>updateSubCategory(index, subCategories?.subCategories[index + 1])}
-              options={subCategories?.subCategories}
+              options={ subCategories?.subCategories.map((guest, index) => {
+                return {
+                   label: guest.name,
+                   value: guest,
+                   key: index
+                }
+             })}
+
+
+
+
            />
   )
 
@@ -539,7 +559,18 @@ const ProductNewComponent = () => {
            {selectedSubSubCategories.map((category, index)=> 
              <Select
               onChange={()=>updateSubSubCategory(index, subSubCategories?.subSubCategories[index + 1])}
-              options={subSubCategories?.subSubCategories}
+              options={              subSubCategories?.subSubCategories.map((guest, index) => {
+                return {
+                   label: guest.name,
+                   value: guest,
+                   key: index
+                }
+             })}
+
+
+
+
+
            />
   )
 

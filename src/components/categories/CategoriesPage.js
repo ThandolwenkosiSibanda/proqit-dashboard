@@ -9,8 +9,8 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_PROMOTION_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
-import { PRODUCTS_QUERY, SHOPS_QUERY } from '../../gql/Query';
+import { CREATE_CATEGORY_MUTATION, CREATE_PROMOTION_MUTATION, CREATE_SUB_CATEGORY_MUTATION, CREATE_SUB_SUB_CATEGORY_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
+import { CATEGORIES_QUERY, PRODUCTS_QUERY, SHOPS_QUERY, SUB_CATEGORIES_QUERY, SUB_SUB_CATEGORIES_QUERY } from '../../gql/Query';
 
 import Modal from 'react-modal';
 
@@ -30,6 +30,9 @@ const customStyles = {
 
 const CategoriesPage = () => {
     const [form, setForm] = useState({});
+
+
+    console.log("form", form)
 
     const [categoryOpen, setCategoryOpen] = useState(false);
     const [subCategoryOpen, setSubCategoryOpen] = useState(false);
@@ -74,10 +77,35 @@ const CategoriesPage = () => {
         pollInterval: 500,
       });
 
+      const {data: categoriesData} = useQuery(CATEGORIES_QUERY, {
+        fetchPolicy: 'network-only',
+        pollInterval: 500,
+      });
+
+
+
+      const {data: subCategoriesData} = useQuery(SUB_CATEGORIES_QUERY, {
+        fetchPolicy: 'network-only',
+        pollInterval: 500,
+      });
+
+
+      // console.log('subCategoriesData', subCategoriesData)
+
+      const {data: subSubCategoriesData} = useQuery(SUB_SUB_CATEGORIES_QUERY, {
+        fetchPolicy: 'network-only',
+        pollInterval: 500,
+      });
+
+
+      console.log("subSubCategoriesData", subSubCategoriesData)
+
+      
+
 
       const {data: shops} = useQuery(SHOPS_QUERY, {
         fetchPolicy: 'network-only',
-        pollInterval: 500,
+        // pollInterval: 500,
       });
 
 
@@ -88,22 +116,27 @@ const CategoriesPage = () => {
       console.log('active', active)
 
 
-    const [submitCategory, {data: createCategoryData}] = useMutation(CREATE_PROMOTION_MUTATION, {
+    const [submitCategory, {data: createCategoryData}] = useMutation(CREATE_CATEGORY_MUTATION, {
         variables: {
-          name: form.name,
+          name: category,
         },
       });
 
 
-      const [submitSubCategory, {data: createSubCategoryData}] = useMutation(CREATE_PROMOTION_MUTATION, {
+      console.log("createCategoryData", createCategoryData)
+
+
+      const [submitSubCategory, {data: createSubCategoryData}] = useMutation(CREATE_SUB_CATEGORY_MUTATION, {
         variables: {
-          name: form.name,
+          name: subCategory,
         },
       });
 
-      const [submitSubSubCategory, {data: createSubSubCategoryData}] = useMutation(CREATE_PROMOTION_MUTATION, {
+      console.log("createSubCategoryData", createSubCategoryData)
+
+      const [submitSubSubCategory, {data: createSubSubCategoryData}] = useMutation(CREATE_SUB_SUB_CATEGORY_MUTATION, {
         variables: {
-          name: form.name,
+          name: subSubCategory,
         },
       });
 
@@ -124,18 +157,18 @@ const CategoriesPage = () => {
     
      const  handleSubmitCategory = () => {
           submitCategory();
-          setShow(false);
+          setCategoryOpen(false)
       }
 
       const  handleSubmitSubCategory = () => {
         submitSubCategory();
-        setShow(false);
+        setSubCategoryOpen(false);
 
     }
 
     const  handleSubmitSubSubCategory = () => {
       submitSubSubCategory();
-      setShow(false);
+      setSubSubCategoryOpen(false);
 
   }
  
@@ -413,7 +446,7 @@ const CategoriesPage = () => {
         </tr>
       </thead>
       <tbody>
-{data?.products?.map((product, index)=><tr key ={index}>
+{categoriesData?.categories?.map((product, index)=><tr key ={index}>
    <td>{index + 1}</td>
    <td>{product?.name}</td>
 
@@ -454,7 +487,7 @@ const CategoriesPage = () => {
         </tr>
       </thead>
       <tbody>
-{data?.products?.map((product, index)=><tr key ={index}>
+{subCategoriesData?.subCategories?.map((product, index)=><tr key ={index}>
    <td>{index + 1}</td>
    <td>{product?.name}</td>
 
@@ -495,7 +528,7 @@ const CategoriesPage = () => {
         </tr>
       </thead>
       <tbody>
-{data?.products?.map((product, index)=><tr key ={index}>
+{subSubCategoriesData?.subSubCategories?.map((product, index)=><tr key ={index}>
    <td>{index + 1}</td>
    <td>{product?.name}</td>
 
