@@ -9,10 +9,16 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_CATEGORY_MUTATION, CREATE_PROMOTION_MUTATION, CREATE_SUB_CATEGORY_MUTATION, CREATE_SUB_SUB_CATEGORY_MUTATION, DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
+import { CREATE_CATEGORY_MUTATION,
+         CREATE_PROMOTION_MUTATION, 
+         CREATE_SUB_CATEGORY_MUTATION, 
+         CREATE_SUB_SUB_CATEGORY_MUTATION, 
+         DELETE_PROMOTION_MUTATION } from '../../gql/Mutation';
 import { CATEGORIES_QUERY, PRODUCTS_QUERY, SHOPS_QUERY, SUB_CATEGORIES_QUERY, SUB_SUB_CATEGORIES_QUERY } from '../../gql/Query';
 
 import Modal from 'react-modal';
+
+import Select from 'react-select'
 
 const customStyles = {
   content: {
@@ -43,7 +49,18 @@ const CategoriesPage = () => {
 
     const [subCategory, setSubCategory] = useState("");
 
+
+    
     const [subSubCategory, setSubSubCategory] = useState("");
+
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  
+
+  
+
+    console.log("selectedCategory", selectedCategory?.value?._id);
+    console.log("selectedSubCategory", selectedSubCategory?.value?._id)
 
 
     const [images, setImages] = useState([]);
@@ -129,6 +146,7 @@ const CategoriesPage = () => {
       const [submitSubCategory, {data: createSubCategoryData}] = useMutation(CREATE_SUB_CATEGORY_MUTATION, {
         variables: {
           name: subCategory,
+          category: selectedCategory?.value?._id
         },
       });
 
@@ -137,6 +155,8 @@ const CategoriesPage = () => {
       const [submitSubSubCategory, {data: createSubSubCategoryData}] = useMutation(CREATE_SUB_SUB_CATEGORY_MUTATION, {
         variables: {
           name: subSubCategory,
+          category: selectedCategory?.value?._id,
+          subCategory: selectedSubCategory?.value?._id
         },
       });
 
@@ -238,6 +258,19 @@ const CategoriesPage = () => {
         
         
         <div>Add New sub Category</div>
+
+
+
+
+
+        {/* <Select options={// categoriesData?.categories} /> */}
+
+
+
+
+
+
+
         <Form>
   
 
@@ -255,6 +288,22 @@ const CategoriesPage = () => {
 </Form>
 
 
+
+<div style={{marginBottom: "10px"}}>
+<Form.Label style={{marginBottom: "20px"}}>Category</Form.Label>
+
+          <Select   
+            onChange={setSelectedCategory}
+             options={categoriesData?.categories.map((guest, index) => {
+               return {
+                  label: guest.name,
+                  value: guest,
+                  key: index
+               }
+            })}
+          />
+
+</div>
 
 
 <div style={{display: 'flex', flexDirection: 'row', gap: '10px'}}>
@@ -289,6 +338,39 @@ const CategoriesPage = () => {
   </Form.Group>
 
 </Form>
+
+<div style={{marginBottom: "10px"}}>
+<Form.Label style={{marginBottom: "20px"}}>Category</Form.Label>
+
+<Select   
+            onChange={setSelectedCategory}
+             options={categoriesData?.categories.map((guest, index) => {
+               return {
+                  label: guest.name,
+                  value: guest,
+                  key: index
+               }
+            })}
+          />
+
+</div>
+
+<div style={{marginBottom: "10px"}}>
+<Form.Label style={{marginBottom: "20px"}}>Sub Category</Form.Label>
+
+<Select   
+            //  onChange={()=>updateCategory(index, categories?.categories[index + 1])}
+            onChange={setSelectedSubCategory}
+             options={subCategoriesData?.subCategories .map((guest, index) => {
+               return {
+                  label: guest.name,
+                  value: guest,
+                  key: index
+               }
+            })}
+          />
+
+</div>
 
 
 

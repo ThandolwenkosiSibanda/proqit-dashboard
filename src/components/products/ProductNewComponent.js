@@ -179,7 +179,7 @@ const ProductNewComponent = () => {
 
       console.log('addLoading', addLoading);
 
-      console.log('addError', JSON.stringify(addError, null, 2));
+      console.log('addError on add', JSON.stringify(addError, null, 2));
 
 
       const [deletePromotion, {data: deleteData, error: deleteError}] = useMutation(DELETE_PROMOTION_MUTATION, {
