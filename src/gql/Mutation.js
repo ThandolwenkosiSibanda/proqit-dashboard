@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // export const LOGIN_MUTATION = gql`
 //   mutation LOGIN($email: String!, $password: String!) {
@@ -18,7 +18,7 @@ import {gql} from '@apollo/client';
 
 export const LOGIN_MUTATION = gql`
   mutation LoginUser($email: String, $password: String) {
-    loginUser(input: {email: $email, password: $password}) {
+    loginUser(input: { email: $email, password: $password }) {
       _id
       email
       token
@@ -28,7 +28,7 @@ export const LOGIN_MUTATION = gql`
 
 export const LOGIN_ADMIN_MUTATION = gql`
   mutation LoginAdmin($email: String, $password: String) {
-    loginAdmin(input: {email: $email, password: $password}) {
+    loginAdmin(input: { email: $email, password: $password }) {
       _id
       email
       token
@@ -38,7 +38,7 @@ export const LOGIN_ADMIN_MUTATION = gql`
 
 export const CREATE_USER_MUTATION = gql`
   mutation CreateUser($email: String!, $password: String!) {
-    createUser(input: {email: $email, password: $password}) {
+    createUser(input: { email: $email, password: $password }) {
       _id
       email
       token
@@ -48,7 +48,7 @@ export const CREATE_USER_MUTATION = gql`
 
 export const CREATE_USER_FROM_GOOGLE_MUTATION = gql`
   mutation CreateUserFromGoogle($token: String!, $email: String!) {
-    createUserFromGoogle(input: {token: $token, email: $email}) {
+    createUserFromGoogle(input: { token: $token, email: $email }) {
       _id
       email
       token
@@ -56,7 +56,6 @@ export const CREATE_USER_FROM_GOOGLE_MUTATION = gql`
     }
   }
 `;
-
 
 export const CREATE_PRODUCT_MUTATION = gql`
   mutation CreateProductMutation(
@@ -75,70 +74,48 @@ export const CREATE_PRODUCT_MUTATION = gql`
   ) {
     createProduct(
       input: {
-              name: $name,
-              guestPrice: $guestPrice, 
-              tradeAccountPrice: $tradeAccountPrice, 
-              bulkPrice: $bulkPrice, 
-              shortDescription: $shortDescription, 
-              longDescription: $longDescription,
-              images: $images, 
-              technicalDownLoads: $technicalDownLoads,
-              tags: $tags, 
-              categories: $categories,
-              content: $content,   
-              type: $type,
-              }
+        name: $name
+        guestPrice: $guestPrice
+        tradeAccountPrice: $tradeAccountPrice
+        bulkPrice: $bulkPrice
+        shortDescription: $shortDescription
+        longDescription: $longDescription
+        images: $images
+        technicalDownLoads: $technicalDownLoads
+        tags: $tags
+        categories: $categories
+        content: $content
+        type: $type
+      }
     ) {
       _id
     }
   }
 `;
 
-
-
-
 export const CREATE_CATEGORY_MUTATION = gql`
-  mutation CreateCategoryMutation(
-    $name: String
-  ) {
-    createCategory(
-      input: {
-              name: $name
-              }
-    ) {
+  mutation CreateCategoryMutation($name: String) {
+    createCategory(input: { name: $name }) {
       _id
     }
   }
 `;
 
 export const CREATE_SUB_CATEGORY_MUTATION = gql`
-  mutation CreateCategoryMutation(
-    $name: String
-  ) {
-    createSubCategory(
-      input: {
-              name: $name
-              }
-    ) {
+  mutation CreateCategoryMutation($name: String) {
+    createSubCategory(input: { name: $name }) {
       _id
     }
   }
 `;
 
 export const CREATE_SUB_SUB_CATEGORY_MUTATION = gql`
-  mutation CreateSubSubCategoryMutation(
-    $name: String
-  ) {
-    createSubSubCategory(
-      input: {
-              name: $name
-              }
-    ) {
+  mutation CreateSubSubCategoryMutation($name: String) {
+    createSubSubCategory(input: { name: $name }) {
       _id
     }
   }
 `;
-
 
 export const CREATE_PAYMENT_MUTATION = gql`
   mutation CreatePayment(
@@ -164,7 +141,7 @@ export const CREATE_PAYMENT_MUTATION = gql`
 
 export const CASH_ADVANCE_MUTATION = gql`
   mutation CreateCashAdvance($amount: Float!, $userId: String!) {
-    createCashAdvance(input: {amount: $amount, user: $userId}) {
+    createCashAdvance(input: { amount: $amount, user: $userId }) {
       amount
     }
   }
@@ -176,9 +153,7 @@ export const UPDATE_CASH_ADVANCE_MUTATION = gql`
     $status: String!
     $email: String!
   ) {
-    updateCashAdvance(
-      input: {_id: $_id, status: $status, email: $email}
-    ) {
+    updateCashAdvance(input: { _id: $_id, status: $status, email: $email }) {
       amount
     }
   }
@@ -191,7 +166,7 @@ export const PERSONAL_LOAN_MUTATION = gql`
     $userId: String!
   ) {
     createPersonalLoan(
-      input: {amount: $amount, months: $months, user: $userId}
+      input: { amount: $amount, months: $months, user: $userId }
     ) {
       amount
       months
@@ -205,9 +180,7 @@ export const UPDATE_PERSONAL_LOAN_MUTATION = gql`
     $status: String!
     $email: String!
   ) {
-    updatePersonalLoan(
-      input: {_id: $_id, status: $status, email: $email}
-    ) {
+    updatePersonalLoan(input: { _id: $_id, status: $status, email: $email }) {
       amount
       months
     }
@@ -216,14 +189,14 @@ export const UPDATE_PERSONAL_LOAN_MUTATION = gql`
 
 export const CREATE_LIKE_MUTATION = gql`
   mutation CreateLike($user: String, $promotion: String) {
-    createLike(input: {user: $user, promotion: $promotion}) {
+    createLike(input: { user: $user, promotion: $promotion }) {
       _id
     }
   }
 `;
 export const DELETE_LIKE_MUTATION = gql`
   mutation DeleteLike($user: String!, $promotion: String!) {
-    deleteLike(input: {user: $user, promotion: $promotion}) {
+    deleteLike(input: { user: $user, promotion: $promotion }) {
       _id
     }
   }
@@ -231,7 +204,7 @@ export const DELETE_LIKE_MUTATION = gql`
 
 export const UPDATE_USER_TOKEN_MUTATION = gql`
   mutation UpdateUserToken($user: String!, $deviceToken: String!) {
-    updateUserToken(input: {user: $user, deviceToken: $deviceToken}) {
+    updateUserToken(input: { user: $user, deviceToken: $deviceToken }) {
       _id
     }
   }
@@ -239,7 +212,7 @@ export const UPDATE_USER_TOKEN_MUTATION = gql`
 
 export const SUSPEND_MONEY_ACCOUNT_MUTATION = gql`
   mutation SuspendMoneyAccount($user: String!, $status: String!) {
-    suspendMoneyAccount(input: {user: $user, status: $status}) {
+    suspendMoneyAccount(input: { user: $user, status: $status }) {
       status
     }
   }
@@ -247,12 +220,11 @@ export const SUSPEND_MONEY_ACCOUNT_MUTATION = gql`
 
 export const DELETE_MONEY_MEMBER_MUTATION = gql`
   mutation DeleteMoneyMember($_id: String!) {
-    deleteMoneyMember(input: {_id: $_id}) {
+    deleteMoneyMember(input: { _id: $_id }) {
       _id
     }
   }
 `;
-
 
 export const CREATE_MONEY_MEMBER_MUTATION = gql`
   mutation CreateMoneyMember(
@@ -290,7 +262,6 @@ export const UPDATE_MONEY_MEMBER_MUTATION = gql`
     $verificationStatus: VerificationStatus
     $personalLoanLimit: Float
     $cashAdvanceLimit: Float
-
   ) {
     updateMoneyMember(
       input: {
@@ -307,7 +278,7 @@ export const UPDATE_MONEY_MEMBER_MUTATION = gql`
 
 export const SEND_PASSWORD_RESET_MUTATION = gql`
   mutation SendPasswordReset($email: String!) {
-    sendPasswordReset(input: {email: $email}) {
+    sendPasswordReset(input: { email: $email }) {
       status
     }
   }
@@ -315,18 +286,13 @@ export const SEND_PASSWORD_RESET_MUTATION = gql`
 
 export const UPDATE_MESSAGE_MUTATION = gql`
   mutation UpdateMessage($id: String) {
-    updateMessage(input: {id: $id}) {
+    updateMessage(input: { id: $id }) {
       status
       content
       createdAt
     }
   }
 `;
-
-
-
-
-
 
 export const CREATE_PROMOTION_MUTATION = gql`
   mutation CreatePromotionMutation(
@@ -341,15 +307,15 @@ export const CREATE_PROMOTION_MUTATION = gql`
   ) {
     createPromotion(
       input: {
-              shop: $shop, 
-              type: $type, 
-              title: $title, 
-              price: $price, 
-              promoPrice: $promoPrice, 
-              expiryDate: $expiryDate, 
-              numberOfVoucherCodes: $numberOfVoucherCodes, 
-              images: $images
-              }
+        shop: $shop
+        type: $type
+        title: $title
+        price: $price
+        promoPrice: $promoPrice
+        expiryDate: $expiryDate
+        numberOfVoucherCodes: $numberOfVoucherCodes
+        images: $images
+      }
     ) {
       _id
     }
@@ -369,31 +335,28 @@ export const UPDATE_PROMOTION_MUTATION = gql`
   ) {
     updatePromotion(
       input: {
-              _id: $_id, 
-              shop: $shop, 
-              type: $type, 
-              title: $title, 
-              price: $price, 
-              promoPrice: $promoPrice, 
-              expiryDate: $expiryDate, 
-              images: $images
-              }
+        _id: $_id
+        shop: $shop
+        type: $type
+        title: $title
+        price: $price
+        promoPrice: $promoPrice
+        expiryDate: $expiryDate
+        images: $images
+      }
     ) {
       _id
     }
   }
 `;
 
-
-
 export const DELETE_PROMOTION_MUTATION = gql`
   mutation DeletePromotion($_id: String!) {
-    deletePromotion(input: {_id: $_id}) {
+    deletePromotion(input: { _id: $_id }) {
       _id
     }
   }
 `;
-
 
 export const CREATE_SHOP_MUTATION = gql`
   mutation CreateShopMutation(
@@ -404,13 +367,10 @@ export const CREATE_SHOP_MUTATION = gql`
   ) {
     createShop(
       input: {
-              name: $name, 
-              address: $address,
-              location: {
-                type: "Point"
-                coordinates: [$lat , $lng]
-              },
-         }
+        name: $name
+        address: $address
+        location: { type: "Point", coordinates: [$lat, $lng] }
+      }
     ) {
       _id
     }
@@ -427,29 +387,24 @@ export const UPDATE_SHOP_MUTATION = gql`
   ) {
     updateShop(
       input: {
-              _id: $_id, 
-              name: $name, 
-              address: $address,
-              location: {
-                type: "Point"
-                coordinates: [$lat , $lng]
-              },
-         }
+        _id: $_id
+        name: $name
+        address: $address
+        location: { type: "Point", coordinates: [$lat, $lng] }
+      }
     ) {
       _id
     }
   }
 `;
 
-
 export const DELETE_USER_MUTATION = gql`
   mutation DeleteUser($_id: String!) {
-    deleteUser(input: {_id: $_id}) {
+    deleteUser(input: { _id: $_id }) {
       _id
     }
   }
 `;
-
 
 export const CREATE_BANNER_MUTATION = gql`
   mutation CreateBannerMutation(
@@ -461,12 +416,12 @@ export const CREATE_BANNER_MUTATION = gql`
   ) {
     createBanner(
       input: {
-              name: $name, 
-              image: $image, 
-              expiryDate: $expiryDate, 
-              type: $type, 
-              promotion: $promotion, 
-              }
+        name: $name
+        image: $image
+        expiryDate: $expiryDate
+        type: $type
+        promotion: $promotion
+      }
     ) {
       _id
     }
@@ -474,48 +429,28 @@ export const CREATE_BANNER_MUTATION = gql`
 `;
 
 export const DELETE_BANNER_MUTATION = gql`
-  mutation DeleteBannerMutation(
-    $_id: String
-  ) {
-    deleteBanner(
-      input: {
-              _id: $_id, 
-              }
-    ) {
+  mutation DeleteBannerMutation($_id: String) {
+    deleteBanner(input: { _id: $_id }) {
       _id
     }
   }
 `;
 
 export const CREATE_BANK_MUTATION = gql`
-  mutation CreateBankMutation(
-    $name: String
-  ) {
-    createBank(
-      input: {
-              name: $name
-              }
-    ) {
+  mutation CreateBankMutation($name: String) {
+    createBank(input: { name: $name }) {
       _id
     }
   }
 `;
 
 export const DELETE_BANK_MUTATION = gql`
-  mutation DeleteBankMutation(
-    $_id: String
-  ) {
-    deleteBank(
-      input: {
-              _id: $_id, 
-              }
-    ) {
+  mutation DeleteBankMutation($_id: String) {
+    deleteBank(input: { _id: $_id }) {
       _id
     }
   }
 `;
-
-
 
 export const UPDATE_CART_MUTATION = gql`
   mutation UpdateCartMutation(
@@ -525,17 +460,9 @@ export const UPDATE_CART_MUTATION = gql`
     $quantity: Float
   ) {
     updateCart(
-      input: {
-              _id: $_id, 
-              user: $user, 
-              product: $product, 
-              quantity: $quantity,
-         
-         }
+      input: { _id: $_id, user: $user, product: $product, quantity: $quantity }
     ) {
       _id
     }
   }
 `;
-
-
