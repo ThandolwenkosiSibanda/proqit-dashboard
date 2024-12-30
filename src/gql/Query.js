@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const PROMOS_QUERY = gql`
   query PromosQuery {
@@ -81,11 +81,10 @@ export const PERSONAL_LOAN_QUERY = gql`
         _id
       }
 
- moneyMember{
-  name
-  surname
- }
-
+      moneyMember {
+        name
+        surname
+      }
     }
   }
 `;
@@ -111,10 +110,10 @@ export const CASH_ADVANCE_QUERY = gql`
       user {
         _id
       }
-     moneyMember {
-       name
-       surname
-     }
+      moneyMember {
+        name
+        surname
+      }
     }
   }
 `;
@@ -131,9 +130,9 @@ export const ADMIN_CASH_ADVANCES_QUERY = gql`
       }
       moneyMember {
         _id
-         name
-          surname
-        }
+        name
+        surname
+      }
     }
   }
 `;
@@ -159,10 +158,9 @@ export const ADMIN_LOANS_QUERY = gql`
       }
       moneyMember {
         _id
-         name
-          surname
-        }
-
+        name
+        surname
+      }
     }
   }
 `;
@@ -179,7 +177,6 @@ export const PAYMENTS_QUERY = gql`
     }
   }
 `;
-
 
 export const ADMIN_PAYMENTS_QUERY = gql`
   query AdminPaymentsQuery {
@@ -203,10 +200,10 @@ export const ADMIN_MESSAGES_QUERY = gql`
     admin_messages {
       _id
       receiver {
-       _id
+        _id
       }
       sender {
-       _id
+        _id
       }
       content
       status
@@ -261,7 +258,7 @@ export const USER_QUERY = gql`
 
 export const USERS_QUERY = gql`
   query UsersQuery {
-    users{
+    users {
       _id
       email
       verificationStatus
@@ -326,8 +323,6 @@ export const GET_BANNERS_QUERY = gql`
   }
 `;
 
-
-
 export const ADMIN_PROMOTIONS_QUERY = gql`
   query AdminPromotionsQuery {
     admin_promotions {
@@ -347,7 +342,6 @@ export const ADMIN_PROMOTIONS_QUERY = gql`
     }
   }
 `;
-
 
 export const PROMOTION_QUERY = gql`
   query PromotionQuery($_id: String!) {
@@ -417,9 +411,6 @@ export const ADMIN_MONEY_MEMBERS_QUERY = gql`
   }
 `;
 
-
-
-
 export const SHOPS_QUERY = gql`
   query ShopsQuery {
     shops {
@@ -459,7 +450,6 @@ export const BANKS_QUERY = gql`
   }
 `;
 
-
 export const VOUCHERCODES_QUERY = gql`
   query VoucherCodesQuery($promotion: String!) {
     voucherCodes(promotion: $promotion) {
@@ -470,17 +460,16 @@ export const VOUCHERCODES_QUERY = gql`
   }
 `;
 
-
 export const CATEGORIES_QUERY = gql`
   query CategoriesQuery {
     categories {
       _id
       name
-      subCategories{
+      subCategories {
         name
         products {
-        name
-      }
+          name
+        }
       }
     }
   }
@@ -508,35 +497,34 @@ export const PRODUCTS_QUERY = gql`
   query ProductsQuery {
     products {
       _id
-    name
-    guestPrice
-    tradeAccountPrice
-    bulkPrice
-    shortDescription
-    longDescription
-    images
-    tags
-    categories {
-      _id
       name
-    }
-    subCategories {
-      _id
-    }
-    keyFeatures
-    availability
-    deliveryInformation
-    technicalDownLoads
-    # technicalSpecifications
-    reviews {
-      _id
-    }
-    shop {
-      _id
-    }
-    expiryDate 
-    createdAt
-      
+      guestPrice
+      tradeAccountPrice
+      bulkPrice
+      shortDescription
+      longDescription
+      images
+      tags
+      categories {
+        _id
+        name
+      }
+      subCategories {
+        _id
+      }
+      keyFeatures
+      availability
+      deliveryInformation
+      technicalDownLoads
+      # technicalSpecifications
+      reviews {
+        _id
+      }
+      shop {
+        _id
+      }
+      expiryDate
+      createdAt
     }
   }
 `;
@@ -546,50 +534,48 @@ export const PRODUCT_QUERY = gql`
     product(_id: $_id) {
       _id
       name
-    guestPrice
-    tradeAccountPrice
-    bulkPrice
-    shortDescription
-    longDescription
-    images
-    tags
-    categories {
-      _id
-    }
-    subCategories {
-      _id
-    }
-    keyFeatures
-    availability
-    deliveryInformation
-    technicalDownLoads
-    # technicalSpecifications
-    reviews {
-      _id
-    }
-    # shop {
-    #   _id
-    # }
-    expiryDate 
-    createdAt
+      guestPrice
+      tradeAccountPrice
+      bulkPrice
+      shortDescription
+      longDescription
+      images
+      tags
+      categories {
+        _id
+      }
+      subCategories {
+        _id
+      }
+      subSubCategories {
+        _id
+      }
+      keyFeatures
+      availability
+      deliveryInformation
+      technicalDownLoads
+      # technicalSpecifications
+      reviews {
+        _id
+      }
+      # shop {
+      #   _id
+      # }
+      expiryDate
+      createdAt
     }
   }
 `;
-
 
 export const CART_PRODUCTS_QUERY = gql`
   query CartProductsQuery($ids: [String]) {
     cartProducts(ids: $ids) {
       _id
-    name
-    guestPrice
-    tradeAccountPrice
-    bulkPrice
-    images
+      name
+      guestPrice
+      tradeAccountPrice
+      bulkPrice
+      images
     }
   }
 `;
-
-
-
-

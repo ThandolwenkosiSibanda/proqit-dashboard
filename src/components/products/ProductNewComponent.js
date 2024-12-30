@@ -97,6 +97,8 @@ const ProductNewComponent = () => {
   const [showDelete, setShowDelete] = useState(false);
 
   console.log("selectedCategories", selectedCategories);
+  console.log("selectedSubCategories", selectedSubCategories);
+  console.log("selectedSubSubCategories", selectedSubSubCategories);
 
   useEffect(() => {
     console.log("fire");

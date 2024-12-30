@@ -69,6 +69,8 @@ export const CREATE_PRODUCT_MUTATION = gql`
     $technicalDownLoads: [String]
     $tags: [String]
     $categories: [String]
+    $subCategories: [String]
+    $subSubCategories: [String]
     $content: String
     $type: String
   ) {
@@ -84,6 +86,8 @@ export const CREATE_PRODUCT_MUTATION = gql`
         technicalDownLoads: $technicalDownLoads
         tags: $tags
         categories: $categories
+        subCategories: $subCategories
+        subSubCategories: $subSubCategories
         content: $content
         type: $type
       }
